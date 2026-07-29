@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-page text-ink-1 antialiased;
+    /* clip (не hidden): page-fade rotateX тимчасово проєктує сторінку ширшою
+       за в'юпорт; clip не створює scroll-контейнер і не ламає sticky */
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: rgba(34, 115, 201, 0.4);
+  }
+
+  :focus-visible {
+    outline: 2px solid #4fc1f0;
+    outline-offset: 2px;
+  }
+}
+
+/* ---- motion (з прототипу website-3d) ---- */
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+    transform: perspective(1200px) rotateX(4deg) translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.page-fade {
+  animation: pageFade 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: 50% 0;
+}
+
+@keyframes gridMove {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 56px;
+  }
+}
+.fx-grid {
+  position: absolute;
+  inset: -45% -12%;
+  background:
+    linear-gradient(rgba(79, 193, 240, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 193, 240, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  transform: rotateX(64deg);
+  animation: gridMove 2.6s linear infinite;
+  -webkit-mask-image: radial-gradient(
+    ellipse 62% 58% at 50% 42%,
+    #000 15%,
+    transparent 70%
+  );
+  mask-image: radial-gradient(
+    ellipse 62% 58% at 50% 42%,
+    #000 15%,
+    transparent 70%
+  );
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.badge-float {
+  animation: floatY 4.5s ease-in-out infinite;
+}
+
+@keyframes tabProgress {
+  from {
+    height: 0;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+@keyframes tabSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.tab-slide {
+  animation: tabSlide 0.45s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.glow-hero {
+  background: radial-gradient(
+    90% 120% at 100% 0%,
+    rgba(30, 154, 214, 0.16) 0%,
+    rgba(10, 14, 20, 0) 60%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .page-fade,
+  .fx-grid,
+  .badge-float,
+  .tab-slide,
+  [style*="tabProgress"] {
+    animation: none !important;
+  }
+}
